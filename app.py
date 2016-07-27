@@ -9,10 +9,31 @@ import pandas as pd
 app = Flask(__name__)
 
 app.vars = {}
+MTA_API_BASE= "http://api.prod.obanyc.com/api/siri/vehicle-monitoring.json?key={0}"
+MTA_API_KEY = "cad6fe64-9fbd-438f-a232-641caeb16efb"
+
 
 @app.route('/')
 def main():
     return redirect('/index.html')
+
+
+def _flatten_dict(root_key, nested_dict, flattened_dict):
+    for key, value in nested_dict.iteritems():
+        next_key = root_key + "_" + key if root_key != "" else key
+        if isinstance(value, dict):
+            _flatten_dict(next_key, value, flattened_dict)
+        else:
+            flattened_dict[next_key] = value
+
+    return flattened_dict
+
+#This is useful for the live MTA Data
+def nyc_current():
+    resp = requests.get(MTA_API_BASE.format(MTA_API_KEY)).json()
+    info = resp['Siri']['ServiceDelivery']['VehicleMonitoringDelivery'][0]['VehicleActivity']
+    return pd.DataFrame([_flatten_dict('', i, {}) for i in info])
+
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
@@ -47,4 +68,5 @@ def graph():
     return render_template('graph.html', script=script, div=div, subtitle=subt)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0') # The operating system listens on all public IPs.
+    #app.run(host='0.0.0.0') # The operating system listens on all public IPs.
+    app.run(port=33507, debug=True)
