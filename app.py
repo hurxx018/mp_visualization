@@ -34,34 +34,34 @@ def nyc_current():
     info = resp['Siri']['ServiceDelivery']['VehicleMonitoringDelivery'][0]['VehicleActivity']
     return pd.DataFrame([_flatten_dict('', i, {}) for i in info])
 
-# def count_buses_fromhistoricdata():
-#     with open("./static/manhattan_bus.pkl", "rb") as f:
-#         df=dill.load(f)
-#     date_format_str = "%Y-%m-%d %H:%M:%S"
-#     date_parser = lambda u: pd.datetime.strptime(u, date_format_str)
-#
-#     init = date_parser("2015-09-"+app.vars['init_Day']+" "
-#                         +app.vars['init_Hour']+":00:00")
-#     fin = init.replace(day=init.day, hour=init.hour, minute= (init.minute + 3)%60)
-#     ending = date_parser("2015-09-"+app.vars['fin_Day']+" "
-#                         +app.vars['fin_Hour']+":00:00")
-#     x0=init
-#     t = []
-#     count = []
-#     i=0
-#     while x0 <= ending:
-#         x0 = init.replace(day=init.day + i*15//(60*24), hour=init.hour + (i*15//60)%24,
-#                             minute= init.minute + i*15 % 60)
-#         x1 = fin.replace(day=fin.day + i*15//(60*24), hour=fin.hour + (i*15//60)%24,
-#                             minute= fin.minute + i*15 % 60)
-#         t.append(x0)
-#         count.append(df[(df.index >= x0) * (df.index <= x1)].unique().size)
-#         i += 1
-#     t=pd.Series(t, name="time")
-#     count=pd.Series(count, name="count")
-#     app.vars["historic_time"] = t
-#     app.vars["historic_count"] = count
-#     return
+def count_buses_fromhistoricdata():
+    with open("./static/manhattan_bus.pkl", "rb") as f:
+        df=dill.load(f)
+    date_format_str = "%Y-%m-%d %H:%M:%S"
+    date_parser = lambda u: pd.datetime.strptime(u, date_format_str)
+
+    init = date_parser("2015-09-"+app.vars['init_Day']+" "
+                        +app.vars['init_Hour']+":00:00")
+    fin = init.replace(day=init.day, hour=init.hour, minute= (init.minute + 3)%60)
+    ending = date_parser("2015-09-"+app.vars['fin_Day']+" "
+                        +app.vars['fin_Hour']+":00:00")
+    x0=init
+    t = []
+    count = []
+    i=0
+    while x0 <= ending:
+        x0 = init.replace(day=init.day + i*15//(60*24), hour=init.hour + (i*15//60)%24,
+                            minute= init.minute + i*15 % 60)
+        x1 = fin.replace(day=fin.day + i*15//(60*24), hour=fin.hour + (i*15//60)%24,
+                            minute= fin.minute + i*15 % 60)
+        t.append(x0)
+        count.append(df[(df.index >= x0) * (df.index <= x1)].unique().size)
+        i += 1
+    t=pd.Series(t, name="time")
+    count=pd.Series(count, name="count")
+    app.vars["historic_time"] = t
+    app.vars["historic_count"] = count
+    return
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
@@ -72,8 +72,8 @@ def index():
         app.vars['init_Hour'] = request.form['init_Hour']
         app.vars['fin_Day'] = request.form['fin_Day']
         app.vars['fin_Hour'] = request.form['fin_Hour']
-        #count_buses_fromhistoricdata()
-        return #redirect('/graph')
+        count_buses_fromhistoricdata()
+        return redirect('/graph')
 
 
 @app.route('/graph')
