@@ -4,6 +4,7 @@ import requests
 from bokeh.plotting import figure
 from bokeh.embed import components
 
+import numpy as np
 import pandas as pd
 import dill
 
