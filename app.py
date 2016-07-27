@@ -13,7 +13,7 @@ app.vars = {}
 
 @app.route('/')
 def main():
-    return redirect('/index.html')
+    return render_template('index.html')#redirect('/index.html')
 
 MTA_API_BASE= "http://api.prod.obanyc.com/api/siri/vehicle-monitoring.json?key={0}"
 MTA_API_KEY = "cad6fe64-9fbd-438f-a232-641caeb16efb"
