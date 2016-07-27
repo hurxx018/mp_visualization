@@ -9,21 +9,27 @@
 	</head>
 	<body style="background-color:powderblue;">
 		<div class=page>
-  			<h1>User Input!</h1>
+  			<h1>The number of Buses on the road</h1>
 				<div class=metanav>
-				<h4>Please enter Days(12-20) and Hours(0-23).</h4>
+				<h3 >Please enter Days(12-20) and Hours(0-23).</h3>
 				<form id='input' method='post' action='index'>
 					<p>
-						<b>Ticker symbol: </b>  <input type='text' name='ticker' />
+						<b style="font-size:170%;margin:10px;" >Beginning Time</b> <br>
+						<b style="font-size:140%;margin:10px;">2015-09-</b><br>
+						  <input type='text' name='init_Day' value="Day" style="margin:15px"/>
+							<input type='text' name='init_Hour' value="Hour"/> <br> <br>
+					 <b style="font-size:170%;margin:10px;">Ending Time</b> <br>
+					 <b style="font-size:140%;margin:10px;">2015-09-</b> <br>
+							<input type='text' name='fin_Day' value="Day" style="margin:15px"/>
+							<input type='text' name='fin_Hour' value="Hour"/>
 					</p>
 					<p>
-						<b>Desired Features </b><br>
+		<!--				<b>Desired Features </b><br>
 							<input type="checkbox" name="features" value="Close"> Closing price<br>
 							<input type="checkbox" name="features" value="Adj. Close"> Adjusted closing price<br>
 							<input type="checkbox" name="features" value="Open"> Opening price<br>
 							<input type="checkbox" name="features" value="Adj. Open"> Adjusted opening price<br>
-
-							<br>
+							<br> 			-->
 						<input type="submit" value="Submit">
 					</p>
 				</form>
